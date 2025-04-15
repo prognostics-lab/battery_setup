@@ -23,6 +23,21 @@ _types:
   - &Metadata pymeasure.experiment.Metadata
 
 
+Cell:
+  cell_id:
+    _target_: *Parameter
+    default: ""
+    name: Cell identifier
+    description: Unique string identifier of the cell
+
+  cell_geometry:
+    _target_: *IntegerParameter
+    default: 18650
+    name: Cell geometry
+    description: Indicator for the geometry of the cell
+    minimum: 1
+
+
 Chip:
   chip_group:
     _target_: *ListParameter
