@@ -124,6 +124,7 @@ class SerialSensor(SCPIMixin, Instrument):
         self._thread = threading.Thread(target=self._get_meas)
         self._thread.daemon = True
         self._thread.start()
+        # TODO: generalize threaded measurement for other instruments
 
     def __getattr__(self, name: str):
         # Only called if `name` is not found through usual means
