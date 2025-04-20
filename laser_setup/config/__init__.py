@@ -36,6 +36,10 @@ def setup(
     if logging:
         setup_logging(instantiate(CONFIG.Logging))
         logger.info(f"Using config file: {CONFIG._session.config_path_used}")
+        logger.info(f"Parameters: {CONFIG.Dir.parameters_file}")
+        logger.info(f"Procedures: {CONFIG.Dir.procedures_file}")
+        logger.info(f"Sequences: {CONFIG.Dir.sequences_file}")
+        logger.info(f"Instruments: {CONFIG.Dir.instruments_file}")
 
     if matplotlib:
         _rcparams = {'matplotlib.rcParams': CONFIG.matplotlib_rcParams}
