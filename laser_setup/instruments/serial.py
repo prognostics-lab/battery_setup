@@ -84,6 +84,7 @@ class SerialSensor(SCPIMixin, Instrument):
         adapter: str,
         name: str,
         data_structure: dict,
+        data_columns: list = None,
         baudrate: int = 115200,
         timeout: float = 0.15,
         includeSCPI=False,
@@ -112,6 +113,7 @@ class SerialSensor(SCPIMixin, Instrument):
 
         self._data_structure = data_structure
         keys = list(self._data_structure.keys())
+        self._data_columns = data_columns or keys
         if self.overwrite_measurements() is None:
             self._data_cls = namedtuple("_data_cls", keys)
         else:
@@ -129,6 +131,11 @@ class SerialSensor(SCPIMixin, Instrument):
     def __getattr__(self, name: str):
         # Only called if `name` is not found through usual means
         return getattr(self.data, name)
+
+    @property
+    def data_columns(self):
+        """Names of each data element"""
+        return self._data_columns
 
     def _get_meas(self):
         try:
