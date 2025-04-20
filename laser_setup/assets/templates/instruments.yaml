@@ -40,6 +40,11 @@ ThorlabsPM100USB:
   IDN: Thorlabs,PM100D,P0037982,2.8.1
   target: ${class:pymeasure.instruments.thorlabs.ThorlabsPM100USB}
 
+SerialSensor:
+  adapter: COM8
+  IDN: ROSATECH,TSN100,P0000003,1.0.1-1
+  target: ${class:laser_setup.instruments.serial.SerialSensor}
+
 PT100SerialSensor:
   adapter: COM8
   IDN: ROSATECH,TSN100,P0000002,1.0.1
