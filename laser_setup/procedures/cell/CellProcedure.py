@@ -1,8 +1,8 @@
 import logging
 
-from .BaseProcedure import BaseProcedure
-from .utils import Parameters
-from ..utils import send_telegram_alert
+from ..BaseProcedure import BaseProcedure
+from ..utils import Parameters
+from ...utils import send_telegram_alert
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
