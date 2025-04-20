@@ -1,8 +1,7 @@
 import logging
 import time
 
-from ...instruments import (InstrumentManager, Keithley2450,
-                           SerialSensor)
+from ...instruments import InstrumentManager, Keithley2450, SerialSensor
 from ...utils import get_latest_DP
 from .CellProcedure import CellProcedure
 from ..utils import Instruments, Parameters
@@ -15,7 +14,8 @@ class DischargeCC(CellProcedure):
     """Discharges a cell using a CC procedure, while measuring surface and
     surrounding air temperatures at two different points.
     """
-    name = 'CC discharge'
+
+    name = "CC discharge"
 
     _temperature_columns = [
         "Clock (s)",
@@ -58,9 +58,15 @@ class DischargeCC(CellProcedure):
     sense_T = Parameters.Instrument.sense_T
 
     INPUTS = CellProcedure.INPUTS + [
-        "soc", "capacity", "volt_limit", "Irange", "sampling_t", "vds", "sense_T",
+        "soc",
+        "capacity",
+        "volt_limit",
+        "Irange",
+        "sampling_t",
+        "vds",
+        "sense_T",
     ]
-    DATA_COLUMNS = ["t (s)", "I (A)", "V (V)"] + _temperature_columns
+    DATA_COLUMNS = ["t (s)", "I (A)", "V (V)", "SoC (-)", "Q (mAh)"] + _temperature_columns
     EXCLUDE = CellProcedure.EXCLUDE + ["sense_T"]
     SEQUENCER_INPUTS = ["laser_v", "vg", "target_T"]
 
@@ -108,15 +114,18 @@ class DischargeCC(CellProcedure):
         # # Turn on the outputs
 
         self.meter.enable_source()
-        time.sleep(1.)
+        time.sleep(1.0)
 
     def execute(self):
         log.info("Starting the measurement")
         self.meter.clear_buffer()
         done = False
-        iteration = 0
         prev_time = self.meter.get_time()
+        iteration = 0
+
         temperature_data = ()  # If temperature is measured, this gets replaced
+        soc = self.soc
+        charge = soc * self.capacity
 
         # TODO: Test if the loop is correct
 
@@ -129,7 +138,7 @@ class DischargeCC(CellProcedure):
 
             # Take measurements
             voltage = self.meter.voltage
-            current = self.meter.buffer_data[-1]
+            current = self.meter.current
             time = self.meter.get_time()
             time_delta = time - prev_time
             prev_time = time
@@ -139,44 +148,25 @@ class DischargeCC(CellProcedure):
                 break
 
             # Coulomb counting
-            charge_change = current * time_delta / 3.6
+            charge_change = -current * time_delta / 3.6
+            charge += charge_change
+            soc += charge_change / self.capacity
 
             # Report progress
+            self.emit("progress", 100 * (1 - soc))
 
-
-
-
-
-            self.emit('progress', 100 * keithley_time / t_end)
-
-            keithley_time = self.meter.get_time()
-            current = self.meter.current
             if self.sense_T:
                 temperature_data = self.temperature_sensor.data
 
-            self.emit('results', dict(zip(
-                self.DATA_COLUMNS, [keithley_time, current, *temperature_data]
-            )))
+            self.emit(
+                "results",
+                dict(
+                    zip(
+                        self.DATA_COLUMNS,
+                        [time, current, voltage, soc, charge, *temperature_data],
+                    )
+                ),
+            )
             time.sleep(self.sampling_t)
 
-
-        # def measuring_loop():
-        #     keithley_time = self.meter.get_time()
-        #     temperature_data = ()
-        #     done = False
-        #     while not done:
-        #         if self.should_stop():
-        #             log.warning('Measurement aborted')
-        #             return
-
-        #         self.emit('progress', 100 * keithley_time / t_end)
-
-        #         keithley_time = self.meter.get_time()
-        #         current = self.meter.current
-        #         if self.sense_T:
-        #             temperature_data = self.temperature_sensor.data
-
-        #         self.emit('results', dict(zip(
-        #             self.DATA_COLUMNS, [keithley_time, current, *temperature_data]
-        #         )))
-        #         time.sleep(self.sampling_t)
+        log.info("Finished discharge")
