@@ -44,19 +44,6 @@ SerialSensor:
   adapter: COM8
   IDN: ROSATECH,TSN100,P0000003,1.0.1-1
   target: ${class:laser_setup.instruments.serial.SerialSensor}
-  kwargs:
-    data_structure:
-      clock: int
-      surface1: float
-      surface2: float
-      air1: float
-      air2: float
-    data_columns:
-      - Clock (s)
-      - T° surface 1 (°C)
-      - T° surface 2 (°C)
-      - T° air 1 (°C)
-      - T° air 2 (°C)
 
 PT100SerialSensor:
   adapter: COM8
