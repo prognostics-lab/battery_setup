@@ -51,9 +51,6 @@ class DischargeCC(CellProcedure):
     Irange = Parameters.Instrument.Irange
     sampling_t = Parameters.Control.sampling_t
 
-    # Electrical parameters
-    vds = Parameters.Control.vds
-
     # Temperature parameters
     sense_T = Parameters.Instrument.sense_T
 
@@ -63,7 +60,6 @@ class DischargeCC(CellProcedure):
         "volt_limit",
         "Irange",
         "sampling_t",
-        "vds",
         "sense_T",
     ]
     DATA_COLUMNS = ["t (s)", "I (A)", "V (V)", "SoC (-)", "Q (mAh)"] + _temperature_columns
