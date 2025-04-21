@@ -45,6 +45,7 @@ Cell:
     default: 1.0
     name: soc
     description: Initial state of charge of the cell
+    units: (-)
     minimum: 0.0
     maximum: 1.0
 
@@ -92,6 +93,7 @@ Instrument:
     group_by: show_more
 
   volt_limit:
+    _target_: *FloatParameter
     default: 4.2
     name: volt_limit
     description: Voltage limit
