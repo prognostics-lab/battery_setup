@@ -1,7 +1,7 @@
 # Extra
 dev/
 video/
-config/*
+# config/*
 data/
 
 # Byte-compiled / optimized / DLL files

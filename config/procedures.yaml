@@ -1,0 +1,26 @@
+# Override parameter defaults and Procedure instance attributes here.
+# Make sure that key names match the type(procedure).__name__ attribute.
+
+It:
+  name: I vs t
+  parameters:
+    procedure_version:
+      value: 2.1.0
+    laser_T:
+      value: 120.
+    initial_T:
+      value: 0.
+    vg:
+      value: DP + 0. V
+
+DischargeCC:
+  name: CC discharge
+  parameters:
+    procedure_version:
+      value: 1.0.0
+
+_types:
+  Wait: ${class:laser_setup.procedures.Wait}
+  It: ${class:laser_setup.procedures.It}
+  DischargeCC: ${class:laser_setup.procedures.cell.DischargeCC}
+  FakeProcedure: ${class:laser_setup.procedures.FakeProcedure.FakeProcedure}
