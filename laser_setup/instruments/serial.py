@@ -114,10 +114,10 @@ class SerialSensor(SCPIMixin, Instrument):
         self._data_structure = data_structure
         keys = list(self._data_structure.keys())
         self._data_columns = data_columns or keys
-        if self.overwrite_measurements() is None:
+        if self.overwrite_measurement_order() is None:
             self._data_cls = namedtuple("_data_cls", keys)
         else:
-            new_keys = [keys[i] for i in self.overwrite_measurements()]
+            new_keys = [keys[i] for i in self.overwrite_measurement_order()]
             self._data_cls = namedtuple("_data_cls", new_keys)
         self.data = None
 
@@ -127,10 +127,6 @@ class SerialSensor(SCPIMixin, Instrument):
         self._thread.daemon = True
         self._thread.start()
         # TODO: generalize threaded measurement for other instruments
-
-    def __getattr__(self, name: str):
-        # Only called if `name` is not found through usual means
-        return getattr(self.data, name)
 
     @property
     def data_columns(self):
