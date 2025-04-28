@@ -1,7 +1,7 @@
 import logging
 import time
 
-from ...instruments import InstrumentManager, Keithley2450, SerialSensor
+from ...instruments import InstrumentManager, Keithley2460, SerialSensor
 from ...utils import get_latest_DP
 from .CellProcedure import CellProcedure
 from ..utils import Instruments, Parameters
@@ -27,9 +27,10 @@ class DischargeCC(CellProcedure):
 
     # Instruments
     instruments = InstrumentManager()
-    meter: Keithley2450 = instruments.queue(**Instruments.Keithley2450)
+    meter: Keithley2460 = instruments.queue(**Instruments.Keithley2460)
     temperature_sensor: SerialSensor = instruments.queue(
         **Instruments.SerialSensor,
+        name="Temperature sensor",
         kwargs={
             "data_structure": {
                 "clock": int,
