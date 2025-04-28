@@ -13,6 +13,68 @@ AnyInstrument = TypeVar('AnyInstrument', bound=Instrument)
 # Songs for the Keithley to play when it's done with a measurement :)
 class Songs:
     triad = [(6/4*1000, 0.25), (5/4*1000, 0.25), (1000, 0.25)]
+
+    # black: 0.6
+    # A = 440
+    # B = 1.12 * A
+    # C = 1.26 * A
+    # D = 1.33 * A
+    # Ds = 1.33 * A
+    # E = 1.50 * A
+    # F = 1.68 * A
+    # G = 1.89 * A
+
+    C4 = 261.6
+    D4 = 293.7
+    Ds4 = 293.7
+    E4 = 329.6
+    F4 = 349.2
+    G4 = 392
+    A4 = 440
+    B4 = 493.9
+
+    C5 = 523.3
+
+    N14 = 0.3
+    N18 = N14 / 2
+    N116 = N14 / 4
+    N12 = 2 * N14
+    N11 = 4 * N14
+    samsung = [
+        (E4, N14),
+        (A4, N14),
+        (A4, N14),
+        (C5, N14),
+        (C5, N14),
+        (A4, N12),
+
+        (E4, N14),
+        (E4, N14),
+        (E4, N14 * 1.5),
+        (E4, N18),
+        (B4, N18),
+        (A4, N18),
+        (G4, N18),
+        (F4, N18),
+        (E4, N12 * 1.5),
+
+        (E4, N14),
+        (A4, N14),
+        (A4, N14),
+        (C5, N14),
+        (C5, N14),
+        (A4, N12),
+
+        (E4, N14),
+        (A4, N14),
+        (G4, N14),
+        (F4, N18),
+        (G4, N18),
+
+        (A4, N14),
+        (Ds4, N14),
+        (E4, N12 * 1.5),
+    ]
     A = [(440, 0.2)]
 
 
@@ -65,10 +127,14 @@ class Keithley2450(_Keithley2450):
         return time
 
     def shutdown(self):
-        for freq, t in Songs.triad:
+        for freq, t in Songs.samsung:
             if freq != 0:
                 self.beep(freq, t)
 
             time.sleep(t)
 
         super().shutdown()
+
+
+class Keithley2460(Keithley2450):
+    pass
