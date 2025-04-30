@@ -139,6 +139,8 @@ class DischargeCC(CellProcedure):
             time = self.meter.get_time()
             time_delta = time - prev_time
             prev_time = time
+            log.debug(f"Voltage {voltage} V")
+            log.debug(f"Current {current} A")
 
             if voltage <= self.volt_limit:
                 log.info("Voltage under limit, stopping")
