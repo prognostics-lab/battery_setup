@@ -13,27 +13,23 @@ AnyInstrument = TypeVar('AnyInstrument', bound=Instrument)
 # Songs for the Keithley to play when it's done with a measurement :)
 class Songs:
     triad = [(6/4*1000, 0.25), (5/4*1000, 0.25), (1000, 0.25)]
+    A = [(440, 0.2)]
 
-    # black: 0.6
-    # A = 440
-    # B = 1.12 * A
-    # C = 1.26 * A
-    # D = 1.33 * A
-    # Ds = 1.33 * A
-    # E = 1.50 * A
-    # F = 1.68 * A
-    # G = 1.89 * A
-
-    C4 = 261.6
+    C4 = 261.63
+    Cs4 = 277.18
     D4 = 293.7
-    Ds4 = 293.7
-    E4 = 329.6
-    F4 = 349.2
+    Ds4 = 311.13
+    E4 = 329.63
+    F4 = 349.23
+    Fs4 = 369.9
     G4 = 392
+    Gs4 = 415.3
     A4 = 440
-    B4 = 493.9
+    As4 = 466.16
+    B4 = 493.88
 
-    C5 = 523.3
+    C5 = 523.35
+    Cs5 = 554.37
 
     N14 = 0.3
     N18 = N14 / 2
@@ -44,8 +40,8 @@ class Songs:
         (E4, N14),
         (A4, N14),
         (A4, N14),
-        (C5, N14),
-        (C5, N14),
+        (Cs5, N14),
+        (Cs5, N14),
         (A4, N12),
 
         (E4, N14),
@@ -61,8 +57,8 @@ class Songs:
         (E4, N14),
         (A4, N14),
         (A4, N14),
-        (C5, N14),
-        (C5, N14),
+        (Cs5, N14),
+        (Cs5, N14),
         (A4, N12),
 
         (E4, N14),
@@ -75,7 +71,6 @@ class Songs:
         (Ds4, N14),
         (E4, N12 * 1.5),
     ]
-    A = [(440, 0.2)]
 
 
 class Keithley2450(_Keithley2450):
